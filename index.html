@@ -29,14 +29,16 @@ img.photo {
   margin-top:20px;
   animation:pop 1s ease;
 }
-#cake {
-  font-size:100px;
+#cakeContainer {
   margin-top:20px;
   animation:pop 1s ease;
 }
+#cakeImage {
+  width:250px;
+}
 #candles {
-  font-size:25px;
-  margin:20px;
+  margin-top:10px;
+  font-size:20px;
 }
 input {
   padding:15px;
@@ -74,28 +76,19 @@ input {
   <button onclick="submitWish()">Submit Wish</button>
 </div>
 
-<!-- PAGE 4: Cake -->
+<!-- PAGE 4: Cake and Candles -->
 <div id="page4" class="center hidden">
-  <h1>🎂 It’s time to see the cake! 🎂</h1>
-  <div id="cake" onclick="show('page5')">🎂</div>
-</div>
-
-<!-- PAGE 5: Blow Candles -->
-<div id="page5" class="center hidden">
-  <h1>🔥 Blow the candles! 🔥</h1>
-  <div id="candles">🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️</div>
-  <br>
+  <h1>🎂 Here’s your cake! 🎂</h1>
+  <div id="cakeContainer">
+    <img id="cakeImage" src="photos/cake.png" alt="Cake">
+    <div id="candles">🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️🕯️</div>
+  </div>
   <button onclick="blowCandles()">Blow Candles</button>
+  <button onclick="cutCake()" class="hidden" id="cutButton">Cut Cake</button>
 </div>
 
-<!-- PAGE 6: Cut Cake -->
-<div id="page6" class="center hidden">
-  <h1>🍰 Now cut the cake! 🍰</h1>
-  <button onclick="cutCake()">Cut the Cake</button>
-</div>
-
-<!-- PAGE 7: Final Message -->
-<div id="page7" class="center hidden">
+<!-- PAGE 5: Final Message -->
+<div id="page5" class="center hidden">
   <h1>💖 Happy Birthday once again! 💖</h1>
   <p>May God bless you with abundance, happiness, and success. May all your wishes come true ✨</p>
   <img src="photos/wish.jpeg" class="photo" alt="Final Wish">
@@ -118,17 +111,17 @@ function bigFireworks(){
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  for(let i=0; i<300; i++){
-    const x = Math.random()*canvas.width;
-    const y = Math.random()*canvas.height/2;
-    const r = Math.random()*3 + 2;
+  for(let i=0;i<300;i++){
+    const x=Math.random()*canvas.width;
+    const y=Math.random()*canvas.height/2;
+    const r=Math.random()*3+2;
     ctx.beginPath();
-    ctx.arc(x, y, r, 0, 2*Math.PI);
-    ctx.fillStyle = `hsl(${Math.random()*360},100%,50%)`;
+    ctx.arc(x,y,r,0,2*Math.PI);
+    ctx.fillStyle=`hsl(${Math.random()*360},100%,50%)`;
     ctx.fill();
   }
 
-  setTimeout(() => ctx.clearRect(0,0,canvas.width,canvas.height), 1500);
+  setTimeout(()=>ctx.clearRect(0,0,canvas.width,canvas.height),1500);
 }
 
 // Start party
@@ -141,3 +134,27 @@ function startParty(){
 // Submit wish
 function submitWish(){
   const wish = document.getElementById('wishInput').value.trim();
+  if(wish===""){
+    alert("Please type your wish first!");
+    return;
+  }
+  show('page4'); // Show cake and candles
+  bigFireworks();
+}
+
+// Blow candles
+function blowCandles(){
+  document.getElementById('candles').innerText = "💨💨💨";
+  bigFireworks();
+  // Show cut cake button after blowing candles
+  document.getElementById('cutButton').classList.remove('hidden');
+}
+
+// Cut cake
+function cutCake(){
+  bigFireworks();
+  show('page5'); // Final message
+}
+</script>
+</body>
+</html>
